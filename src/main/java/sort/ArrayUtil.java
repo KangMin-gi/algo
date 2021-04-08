@@ -20,7 +20,7 @@ public class ArrayUtil {
     int[] ary = new int[size];
     int length = ary.length;
     for(int i = 0 ; i < length; ++i) {
-      ary[i] = (int)(Math.random() * (maxNum - 1));
+      ary[i] = (int)(Math.random() * (maxNum));
     }
     return ary;
   }
@@ -31,5 +31,6 @@ public class ArrayUtil {
       System.out.print(",");
       System.out.print(ary[i]);
     }
+    System.out.println();
   }
 }
