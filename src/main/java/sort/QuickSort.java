@@ -12,8 +12,6 @@ public class QuickSort implements Sort {
   }
 
   public void quickSort(int left, int right) {
-    System.out.println("left = " + left);
-    System.out.println("right = " + right);
     if (left >= right) {
       return;
     }
@@ -26,7 +24,6 @@ public class QuickSort implements Sort {
     while (L < R) {
       int LV = ary[L];
       int RV = ary[R];
-
 
       if (PV < RV && PV < LV) { // PV < LV,RV
         R--;
