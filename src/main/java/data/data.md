@@ -9,7 +9,7 @@
 - Binary Tree
 - Linked List
 - Deque
-- Array
+- Array 
 ----
 >비선형
 - Tree
