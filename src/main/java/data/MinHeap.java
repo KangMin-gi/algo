@@ -26,9 +26,6 @@ public class MinHeap {
 
   public Integer delete() {
     int root = this.getRoot();
-
-
-
     return root;
   }
 
