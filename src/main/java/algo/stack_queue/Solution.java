@@ -1,36 +1,52 @@
 package algo.stack_queue;
 
-import java.util.Arrays;
+import algo.stack_queue.outputUtil.ArrayUtils;
+
+import java.util.*;
+
+/**
+ * 문제 제출용 클래스
+ */
 
 public class Solution {
 
-  private final static int MAX_ARY_LEN = 100;
-
   public static void main(String[] args) {
     Solution solution = new Solution();
-    int[] p = {100, 1, 1};
-    int[] s = {1, 30 ,5};
-    int[] solution1 = solution.solution(p, s);
-    for (int i : solution1) {
-      System.out.print(i);
-      System.out.print(" ");
-    }
+    int[] prices = {1, 2, 3, 2, 3};
+    int[] solution1 = solution.solution(prices);
+    ArrayUtils.print(solution1);
   }
 
-    public int[] solution ( int[] progresses, int[] speeds){
-      int[] deploys = new int[MAX_ARY_LEN + 3];
-      int day = -1;
+  public int[] solution(int[] prices) {
+    int[] answer = new int[prices.length];
+    List<Integer> priceList = new ArrayList<>();
 
-      for (int i = 0; i < progresses.length; ++i) {
-        int dailyProgress = progresses[i] + (speeds[i] * day);
-        if (dailyProgress >= 100) {
-          deploys[day]++;
-        } else {
-          day++;
-          --i;
+    for (int price : prices) {
+      priceList.add(price);
+    }
+
+
+    for(int i = 0 ; i < priceList.size(); ++i) {
+      int nowPrice = priceList.get(i);
+      Iterator<Integer> iterator = priceList.subList(i, priceList.size()).iterator();
+      int count = 0;
+      int j = 0;
+      while (iterator.hasNext()) {
+        if (j++ == 0) {
+          int price = iterator.next();
+          continue;
+        }
+        int price = iterator.next();
+        count++;
+        if (nowPrice > price) {
+          break;
         }
       }
-      return Arrays.stream(deploys).filter(value -> value != 0).toArray();
-
+      System.out.println();
+      answer[i] = count;
     }
+
+    return answer;
   }
+
+}
