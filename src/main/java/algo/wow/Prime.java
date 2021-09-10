@@ -8,4 +8,6 @@ public class Prime {
     }
     return true;
   }
+
+   // 채를 이용해서 구한다.
 }
