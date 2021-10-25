@@ -8,54 +8,102 @@ public class Solution {
 
   public static void main(String[] args) {
     Solution solution = new Solution();
-    int n = 3;
-    int[] ary1 = {3};
-    int[] ary2 = {1,0,3,0,0,0,0};
-    int jaz = solution.solution("012");
-    System.out.println("jaz = " + jaz);
-
-    List<Integer> tl = new ArrayList<>();
-    tl.add(0);
-    tl.add(1);
-    tl.add(2);
-
-    int right = solution.getRight(ary2, 0);
-    System.out.println("right = " + right);
-
-    // [0, 1, 2, 3, 4]
+    int a = solution.solution("B");
+    System.out.println("answer = " + a);
   }
 
   public int solution(String name) {
-    int totalCount = 0;
-    int[] moveAry = new int[name.length()];
-    for (int i = 0 ; i < name.length(); ++i) {
-      int now = 'A';
-      int next = name.charAt(i);
-      if (next == now) {
-        continue;
-      }
-      int alphaCnt = Math.min(Math.abs(now - next), Math.abs(now + 26 - next));
-      moveAry[i] = alphaCnt;
+    int length = name.length();
+    int totalCount= 0;
+    int nowIndex = 0;
+    int[] nameAry = new int[length];
+    for (int i = 0 ; i < length ; ++i) {
+      nameAry[i] = name.charAt(i) - 'A';
     }
 
-    return 0;
+    while (isEnd(nameAry)) {
+      Mc now = this.getNow(nameAry, nowIndex);
+      totalCount += now.totalMoveCount;
+      nameAry[nowIndex] = 'A';
+
+      Mc right = this.getRight(nameAry, nowIndex);
+      Mc left = this.getLeft(nameAry, nowIndex);
+
+      Mc update = new Mc();
+      if (right.totalMoveCount < left.totalMoveCount) {
+        update.totalMoveCount = right.totalMoveCount;
+        update.index = right.index;
+      } else {
+        update.totalMoveCount = left.totalMoveCount;
+        update.index = left.index;
+      }
+
+      totalCount += update.totalMoveCount;
+      nameAry[update.index] = 'A';
+
+    }
+
+    return totalCount;
+
   }
 
-  public int getRight(int[] moveAry, int startIdx) {
-    int totalCount = 0 ;
-    int remainZeroCount = 0;
-    for ( int i = startIdx; i < moveAry.length; ++i) {
-      if (moveAry[i] != 0) {
-        totalCount += moveAry[i];
-        remainZeroCount = 0;
-      } else {
-        remainZeroCount++;
-      }
-      totalCount++;
+  public boolean isEnd(int[] nameAry) {
+    for (int i : nameAry) {
+      if ( i != 'A')
+        return false;
     }
-    System.out.println("totalCount = " + totalCount);
-    remainZeroCount++; //맨 마지막 처리
-    return totalCount - remainZeroCount;
+    return true;
+  }
+
+  public Mc getRight(int[] nameAry, int nowIndex) {
+    int maxMoveCnt = nameAry.length / 2;
+    Mc mc = new Mc();
+    for(int move = 1; move <= maxMoveCnt ; ++move) {
+      int index = (nowIndex + move) % nameAry.length;
+      if (nameAry[index] == 'A')
+        continue;
+      mc.totalMoveCount = toA(nameAry[index]) + move;
+      mc.index = index;
+      return mc;
+    }
+    return Mc.max();
+  }
+
+  public Mc getLeft(int[] nameAry, int nowIndex) {
+    int maxMoveCnt = nameAry.length / 2;
+    Mc mc = new Mc();
+    for(int move = 1; move <= maxMoveCnt ; ++move) {
+      int index = (nowIndex + nameAry.length - move) % nameAry.length;
+      if (nameAry[index] == 'A')
+        continue;
+      mc.totalMoveCount = toA(nameAry[index]) + move;
+      mc.index = index;
+      return mc;
+    }
+    return Mc.max();
+  }
+
+  public Mc getNow(int[] nameAry, int nowIndex) {
+    Mc mc = new Mc();
+    mc.index = nowIndex;
+    mc.totalMoveCount = toA(nameAry[nowIndex]);
+    return mc;
+  }
+
+  public int toA(int alpha) {
+    return Math.min(alpha - 'A', Math.abs('a' - alpha));
+  }
+
+  public static class Mc {
+    int totalMoveCount;
+    int index;
+
+    public static Mc max() {
+      Mc mc = new Mc();
+      mc.index = -1;
+      mc.totalMoveCount = Integer.MAX_VALUE;
+      return mc;
+    }
   }
 
 
